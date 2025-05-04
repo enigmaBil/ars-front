@@ -1,0 +1,156 @@
+<section class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-600 w-1/2 mx-auto">
+    <h2 class="text-xl text-center py-4 dark:text-white">Vous postulez en tant que: <span class="font-bold">{{jobOffer.title}}</span></h2>
+    <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700"/>
+    <div class="flex flex-col justify-between p-4">
+        <form (ngSubmit)="onSubmit()" [formGroup]="candidatForm" novalidate class="">
+            <!-- Nom -->
+            <div class="mb-5">
+                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Votre Nom</label>
+                <input 
+                    type="text" id="name" 
+                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" 
+                    placeholder="Votre nom" required 
+                    [formControl]="nameCtrl"
+                    [ngClass]="{
+                        'border-red-300 focus:ring-red-500': nameCtrl.touched && nameCtrl.errors,
+                        'focus:border-blue-200 border-blue-200':!(nameCtrl.touched && nameCtrl.errors)
+                    }"
+                />
+                @if (nameCtrl.touched && nameCtrl.errors) {
+                    @if (nameCtrl.hasError("required")) {
+                      <span class="input-error-message">
+                        Ce champ est requis
+                      </span>
+                    }
+                    @if (nameCtrl.hasError("minlength")) {
+                      <span class="input-error-message">
+                        Le nom doit avoir au moins 3 caractères
+                      </span>
+                    }
+                  }
+            </div>
+
+            <!-- Email -->
+            <div class="mb-5">
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Votre Email</label>
+                <input 
+                    type="email" id="email" 
+                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" 
+                    placeholder="Votre email" 
+                    required 
+                    [formControl]="emailCtrl"
+                    [ngClass]="{
+                        'border-red-300 focus:ring-red-500': emailCtrl.touched && emailCtrl.errors,
+                        'focus:border-blue-200 border-blue-200':!(emailCtrl.touched && emailCtrl.errors)
+                    }"
+                    />
+                @if (emailCtrl.touched && emailCtrl.errors) {
+                    @if (emailCtrl.hasError("required")) {
+                      <span class="input-error-message">
+                        Ce champ est requis
+                      </span>
+                    }
+                    @if (emailCtrl.hasError("email")) {
+                      <span class="input-error-message">
+                        Email non valide
+                      </span>
+                    }
+                  }
+            </div>
+
+            <!-- Téléphone -->
+            <div class="mb-5">
+                <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Téléphone</label>
+                <input 
+                    type="text" id="phone" 
+                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" 
+                    placeholder="Téléphone" 
+                    required 
+                    [formControl]="phoneCtrl"
+                    [ngClass]="{
+                        'border-red-300 focus:ring-red-500': phoneCtrl.touched && phoneCtrl.errors,
+                        'focus:border-blue-200 border-blue-200':!(phoneCtrl.touched && phoneCtrl.errors)
+                    }"
+                    />
+                @if (phoneCtrl.touched && phoneCtrl.errors) {
+                    @if (phoneCtrl.hasError("required")) {
+                        <span class="input-error-message">
+                            Ce champ est requis
+                          </span>
+                    }
+                }
+            </div>
+
+            <!-- Années d'expérience -->
+            <div class="mb-5">
+                <label for="experienceYears" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Années d'expérience</label>
+                <input 
+                    type="number" placeholder="Années d'expérience" 
+                    id="experienceYears" 
+                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" 
+                    required 
+                    [formControl]="experienceYearsCtrl"
+                    [ngClass]="{
+                        'border-red-300 focus:ring-red-500': experienceYearsCtrl.touched && experienceYearsCtrl.errors,
+                        'focus:border-blue-200 border-blue-200':!(experienceYearsCtrl.touched && experienceYearsCtrl.errors)
+                    }"
+                />
+                @if (experienceYearsCtrl.touched && experienceYearsCtrl.errors) {
+                    @if (experienceYearsCtrl.hasError("required")) {
+                      <span class="input-error-message">
+                        Ce champ est requis
+                      </span>
+                    }
+                    @if (experienceYearsCtrl.hasError("min")) {
+                      <span class="input-error-message">
+                        Le nombre d'années d'expérience doit être supérieur ou égal à 0
+                      </span>
+                    }
+                  }
+            </div>
+
+            <!-- Niveau d'éducation -->
+            <div class="mb-5">
+                <label for="educationLevel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Niveau d'éducation</label>
+                <input 
+                    type="text" id="educationLevel" 
+                    placeholder="Niveau d'éducation" 
+                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" 
+                    required 
+                    [formControl]="educationLevelCtrl"
+                    [ngClass]="{
+                        'border-red-300 focus:ring-red-500': educationLevelCtrl.touched && educationLevelCtrl.errors,
+                        'focus:border-blue-200 border-blue-200':!(educationLevelCtrl.touched && educationLevelCtrl.errors)
+                    }"
+                />
+                @if (educationLevelCtrl.touched && educationLevelCtrl.errors) {
+                    @if (educationLevelCtrl.hasError("required")) {
+                      <span class="input-error-message">
+                        Ce champ est requis
+                      </span>
+                    }
+                }
+            </div>
+
+            <!-- Fichier CV -->
+            <div class="mb-5">
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="user_avatar">CV</label>
+                <input 
+                    accept=".pdf,.docx" 
+                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                    type="file"
+                    (change)="onFileSelected($event)"
+                    required
+                />
+                @if (fileError) {
+                    <span class="input-error-message">
+                        {{ fileError }}
+                    </span>
+                }
+            </div>
+
+            <!-- Bouton de soumission -->
+            <button type="submit" [disabled]="candidatForm.invalid || !selectedFile" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Postuler</button>
+        </form>
+    </div>
+</section>

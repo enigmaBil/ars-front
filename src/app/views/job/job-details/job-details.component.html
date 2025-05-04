@@ -1,0 +1,44 @@
+<section class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-600 w-1/2 mx-auto">
+    <h2 class="text-2xl font-bold text-center py-4 dark:text-white"> {{jobOffer.title}} </h2>
+    <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700"/>
+    <div class="flex flex-col justify-between p-4">
+        <div>
+            <h3 class="font-extrabold text-white dark:text-white bg-blue-600 ps-2 py-3">Information Général</h3>
+            <div class="grid grid-cols-2 gap-4 place-content-center h-20 ">
+                <div>
+                   <p class="dark:text-white"><strong>Intitulé</strong>:   {{jobOffer.title}}</p> 
+                </div>
+                <div><p class="dark:text-white"><strong>Entreprise</strong>:   {{jobOffer.company}}</p> </div>
+                <div><p class="dark:text-white"><strong>Experience minimum</strong>:   {{jobOffer.experienceYears}}</p> </div>
+                <div><p class="dark:text-white"><strong>Lieu</strong>:   {{jobOffer.location}}</p> </div>
+            </div>
+        </div>
+        <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700"/>
+        <div>
+            <h3 class="font-extrabold text-white dark:text-white bg-blue-600 ps-2 py-3">Descritpion</h3>
+            <div class="grid grid-cols-1 gap-4 place-content-center h-48 ">
+                <div>
+                   <p class="dark:text-white"><strong>Descritpion</strong>:   {{jobOffer.description}}</p> 
+                   <p class="dark:text-white"><strong>Competences requises</strong>:</p>
+                    <ul class="dark:text-white">
+                        @for (item of skills; track $index) {
+                            <li class="text-sm text-gray-500 truncate dark:text-gray-400"> {{item.substring(1, item.length-1)}} </li>
+                        }
+                    </ul>
+                    <p class="dark:text-white"><strong>Niveau d'etude requis</strong>:   {{jobOffer.educationLevel}}</p> 
+                </div>
+            </div>
+        </div>
+        <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700"/>
+        <div>
+            <h3 class="font-extrabold text-white dark:text-white bg-blue-600 ps-2 py-3">Postuler Maintenant</h3>
+            <div class="grid grid-cols-1 gap-4 place-content-center h-20 ">
+                <div class="flex justify-center items-center w-full  space-x-4 ">
+                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                        <a [routerLink]="['/portal','jobs', 'apply', jobOffer.id]"  class="text-gray-800 border border-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Postuler</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
