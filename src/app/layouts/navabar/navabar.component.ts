@@ -1,31 +1,27 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {DOCUMENT} from '@angular/common';
-import {RouterLink, RouterLinkActive} from '@angular/router';
+// src/app/shared/components/navabar/navabar.component.ts
+import { Component, Inject } from '@angular/core';
+import { DOCUMENT, CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-navabar',
-  imports: [
-    RouterLink,
-    RouterLinkActive
-  ],
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './navabar.component.html',
-  styleUrl: './navabar.component.css'
+  styleUrls: ['./navabar.component.css']
 })
-export class NavabarComponent implements OnInit {
-  currentTheme = "";
+export class NavabarComponent {
+  currentTheme = '';
 
-  constructor(
-    @Inject(DOCUMENT) private doc: Document
-) {
-  }
+  constructor(@Inject(DOCUMENT) private doc: Document) {}
 
   ngOnInit(): void {
     const theme = localStorage.getItem("theme");
     if (theme && ["dark", "light"].includes(theme)) {
-    this.currentTheme = theme;
-    document.documentElement.firstElementChild?.classList?.toggle(theme, true);
+      this.currentTheme = theme;
+      document.documentElement.firstElementChild?.classList?.toggle(theme, true);
+    }
   }
-}
 
   toggleTheme() {
     if (this.currentTheme === "dark") {
@@ -33,10 +29,9 @@ export class NavabarComponent implements OnInit {
       this.currentTheme = "light";
       localStorage.setItem("theme", "light");
     } else {
-      this.doc.documentElement.classList?.add("dark");
+      this.doc.documentElement.classList.add("dark");
       this.currentTheme = "dark";
       localStorage.setItem("theme", "dark");
     }
   }
-
 }
