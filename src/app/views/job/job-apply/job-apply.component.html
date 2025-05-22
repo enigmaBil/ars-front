@@ -2,155 +2,73 @@
     <h2 class="text-xl text-center py-4 dark:text-white">Vous postulez en tant que: <span class="font-bold">{{jobOffer.title}}</span></h2>
     <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700"/>
     <div class="flex flex-col justify-between p-4">
-        <form (ngSubmit)="onSubmit()" [formGroup]="candidatForm" novalidate class="">
-            <!-- Nom -->
-            <div class="mb-5">
-                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Votre Nom</label>
-                <input 
-                    type="text" id="name" 
-                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" 
-                    placeholder="Votre nom" required 
-                    [formControl]="nameCtrl"
-                    [ngClass]="{
-                        'border-red-300 focus:ring-red-500': nameCtrl.touched && nameCtrl.errors,
-                        'focus:border-blue-200 border-blue-200':!(nameCtrl.touched && nameCtrl.errors)
-                    }"
-                />
-                @if (nameCtrl.touched && nameCtrl.errors) {
-                    @if (nameCtrl.hasError("required")) {
-                      <span class="input-error-message">
-                        Ce champ est requis
-                      </span>
-                    }
-                    @if (nameCtrl.hasError("minlength")) {
-                      <span class="input-error-message">
-                        Le nom doit avoir au moins 3 caractères
-                      </span>
-                    }
+        <form (ngSubmit)="onSubmit()" [formGroup]="candidatForm"  class="">
+             
+            <div class="flex items-center justify-center w-full mb-5">
+              <label for="dropzone-file"
+                    class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+
+                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                  <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 20 16">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5A5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                  </svg>
+
+                  <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                    <span class="font-semibold">Cliquez pour charger votre CV</span> ou glissez-déposez
+                  </p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">PDF uniquement</p>
+
+                  @if (selectedFile) {
+                    <p class="text-green-600 mt-2 font-medium text-sm">
+                      Fichier sélectionné : {{ selectedFile.name }}
+                    </p>
                   }
-            </div>
 
-            <!-- Email -->
-            <div class="mb-5">
-                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Votre Email</label>
-                <input 
-                    type="email" id="email" 
-                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" 
-                    placeholder="Votre email" 
-                    required 
-                    [formControl]="emailCtrl"
-                    [ngClass]="{
-                        'border-red-300 focus:ring-red-500': emailCtrl.touched && emailCtrl.errors,
-                        'focus:border-blue-200 border-blue-200':!(emailCtrl.touched && emailCtrl.errors)
-                    }"
-                    />
-                @if (emailCtrl.touched && emailCtrl.errors) {
-                    @if (emailCtrl.hasError("required")) {
-                      <span class="input-error-message">
-                        Ce champ est requis
-                      </span>
-                    }
-                    @if (emailCtrl.hasError("email")) {
-                      <span class="input-error-message">
-                        Email non valide
-                      </span>
-                    }
+                  @if (fileError) {
+                    <p class="text-red-600 mt-2 font-medium text-sm">
+                      {{ fileError }}
+                    </p>
                   }
+                </div>
+
+                <input id="dropzone-file"
+                      type="file"
+                      class="hidden"
+                      accept=".pdf"
+                      (change)="onFileSelected($event)">
+              </label>
             </div>
 
-            <!-- Téléphone -->
-            <div class="mb-5">
-                <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Téléphone</label>
-                <input 
-                    type="text" id="phone" 
-                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" 
-                    placeholder="Téléphone" 
-                    required 
-                    [formControl]="phoneCtrl"
-                    [ngClass]="{
-                        'border-red-300 focus:ring-red-500': phoneCtrl.touched && phoneCtrl.errors,
-                        'focus:border-blue-200 border-blue-200':!(phoneCtrl.touched && phoneCtrl.errors)
-                    }"
-                    />
-                @if (phoneCtrl.touched && phoneCtrl.errors) {
-                    @if (phoneCtrl.hasError("required")) {
-                        <span class="input-error-message">
-                            Ce champ est requis
-                          </span>
-                    }
-                }
-            </div>
-
-            <!-- Années d'expérience -->
-            <div class="mb-5">
-                <label for="experienceYears" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Années d'expérience</label>
-                <input 
-                    type="number" placeholder="Années d'expérience" 
-                    id="experienceYears" 
-                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" 
-                    required 
-                    [formControl]="experienceYearsCtrl"
-                    [ngClass]="{
-                        'border-red-300 focus:ring-red-500': experienceYearsCtrl.touched && experienceYearsCtrl.errors,
-                        'focus:border-blue-200 border-blue-200':!(experienceYearsCtrl.touched && experienceYearsCtrl.errors)
-                    }"
-                />
-                @if (experienceYearsCtrl.touched && experienceYearsCtrl.errors) {
-                    @if (experienceYearsCtrl.hasError("required")) {
-                      <span class="input-error-message">
-                        Ce champ est requis
-                      </span>
-                    }
-                    @if (experienceYearsCtrl.hasError("min")) {
-                      <span class="input-error-message">
-                        Le nombre d'années d'expérience doit être supérieur ou égal à 0
-                      </span>
-                    }
-                  }
-            </div>
-
-            <!-- Niveau d'éducation -->
-            <div class="mb-5">
-                <label for="educationLevel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Niveau d'éducation</label>
-                <input 
-                    type="text" id="educationLevel" 
-                    placeholder="Niveau d'éducation" 
-                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" 
-                    required 
-                    [formControl]="educationLevelCtrl"
-                    [ngClass]="{
-                        'border-red-300 focus:ring-red-500': educationLevelCtrl.touched && educationLevelCtrl.errors,
-                        'focus:border-blue-200 border-blue-200':!(educationLevelCtrl.touched && educationLevelCtrl.errors)
-                    }"
-                />
-                @if (educationLevelCtrl.touched && educationLevelCtrl.errors) {
-                    @if (educationLevelCtrl.hasError("required")) {
-                      <span class="input-error-message">
-                        Ce champ est requis
-                      </span>
-                    }
-                }
-            </div>
-
-            <!-- Fichier CV -->
-            <div class="mb-5">
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="user_avatar">CV</label>
-                <input 
-                    accept=".pdf,.docx" 
-                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
-                    type="file"
-                    (change)="onFileSelected($event)"
-                    required
-                />
-                @if (fileError) {
-                    <span class="input-error-message">
-                        {{ fileError }}
-                    </span>
-                }
-            </div>
-
-            <!-- Bouton de soumission -->
-            <button type="submit" [disabled]="candidatForm.invalid || !selectedFile" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Postuler</button>
+            <button (submit)="onSubmit()" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Postuler</button>
         </form>
     </div>
 </section>
+@if (isModalVisible) {
+    <div tabindex="-1"
+         class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-screen bg-black bg-opacity-50 flex">
+      <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+          <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  (click)="closeModal()">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+            <span class="sr-only">Fermer</span>
+          </button>
+          <div class="p-4 md:p-5 text-center">
+            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" d="M12 2c-.791 0-1.55.314-2.11.874l-.893.893a.985.985 0 0 1-.696.288H7.04A2.984 2.984 0 0 0 4.055 7.04v1.262a.986.986 0 0 1-.288.696l-.893.893a2.984 2.984 0 0 0 0 4.22l.893.893a.985.985 0 0 1 .288.696v1.262a2.984 2.984 0 0 0 2.984 2.984h1.262c.261 0 .512.104.696.288l.893.893a2.984 2.984 0 0 0 4.22 0l.893-.893a.985.985 0 0 1 .696-.288h1.262a2.984 2.984 0 0 0 2.984-2.984V15.7c0-.261.104-.512.288-.696l.893-.893a2.984 2.984 0 0 0 0-4.22l-.893-.893a.985.985 0 0 1-.288-.696V7.04a2.984 2.984 0 0 0-2.984-2.984h-1.262a.985.985 0 0 1-.696-.288l-.893-.893A2.984 2.984 0 0 0 12 2Zm3.683 7.73a1 1 0 1 0-1.414-1.413l-4.253 4.253-1.277-1.277a1 1 0 0 0-1.415 1.414l1.985 1.984a1 1 0 0 0 1.414 0l4.96-4.96Z" clip-rule="evenodd"/>
+            </svg>
+            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Votre CV a été soumis avec succès !
+            </h3>
+            <button (click)="closeModal()" type="button"
+                    class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+              ok
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }

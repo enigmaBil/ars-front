@@ -10,7 +10,7 @@ export class JobService{
   /**
    * URL de l'API pour les offres d'emploi.
    */
-  private apiUrl = 'http://localhost:8080/api/job-offers';
+  private apiUrl = 'http://localhost:8089/api/job-offers';
   
   constructor(private readonly http: HttpClient) { }
 
