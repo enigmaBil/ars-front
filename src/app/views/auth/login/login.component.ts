@@ -1,41 +1,64 @@
-// src/app/views/auth/login/login.component.ts
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { AuthService } from '../../../core/services/auth.service';
-import Swal from 'sweetalert2';
+import { StorageService } from '../../../core/services/storage.service';
 import { NavabarComponent } from '../../../layouts/navabar/navabar.component';
-import { FooterComponent } from '../../../layouts/footer/footer.component';
-
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FooterComponent,FormsModule, RouterModule,NavabarComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    NzFormModule,
+    NzInputModule,
+    NzButtonModule,
+    NavabarComponent
+  ],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  email = '';
-  password = '';
-  error = '';
+  loginForm: ReturnType<FormBuilder['group']>;
 
-  constructor(private authService: AuthService, private router: Router) { }
-
-  login() {
-    if (this.authService.login(this.email, this.password)) {
-      Swal.fire({
-        title: "Connexion réussie !",
-        text: "Bienvenue dans votre espace RH.",
-        icon: "success",
-        confirmButtonText: "OK"
-      }).then(() => {
-        this.router.navigate(['/admin/candidats']);
-      });
-    } else {
-      this.error = 'Identifiants invalides';
-    }
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private storage: StorageService,
+    private router: Router,
+    private message: NzMessageService
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
   }
 
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      this.message.error('Veuillez remplir tous les champs correctement.');
+      return;
+    }
+
+    const { email, password } = this.loginForm.value;
+    if (email == null || password == null) {
+      this.message.error('Veuillez remplir tous les champs correctement.');
+      return;
+    }
+    this.authService.login({ email: email as string, password: password as string }).subscribe({
+      next: (res) => {
+        this.storage.saveToken(res.accessToken);
+        this.message.success('Connexion réussie');
+        this.router.navigate(['/admin/CandidatListComponent']); // Redirection ici
+      },
+      error: () => this.message.error('Email ou mot de passe invalide.')
+    });
+  }
 }

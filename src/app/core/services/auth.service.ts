@@ -1,17 +1,24 @@
-// src/app/core/services/auth.service.ts
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+interface AuthResponse {
+  accessToken: string;
+}
+
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  login(email: string, password: string): boolean {
-    return email === 'rh@entreprise.com' && password === 'admin123';
-  }
-  logout(): void {
-    // Si vous avez des informations de session comme un token, vous pouvez les effacer ici
-    // Par exemple : localStorage.removeItem('auth_token');
-    console.log("Utilisateur déconnecté");
-  }
+  private apiUrl = 'http://localhost:8080/api/auth';
 
+  constructor(private http: HttpClient) {}
+
+  login(data: LoginRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data);
+  }
+  
 }
